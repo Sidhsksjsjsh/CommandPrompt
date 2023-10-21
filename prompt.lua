@@ -138,6 +138,8 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		titleBar.TextSize = tonumber(command:sub(21))
 		cmdInput.Text = cmdInput.Text .. "\n" .. "Title Text size successfully changed!" .. "\n" .. "> "
 	   end)
+	elseif command == "> bypass-adonis" then
+		print("bypassed")
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
