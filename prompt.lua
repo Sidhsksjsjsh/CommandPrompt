@@ -54,7 +54,7 @@ cmdInputContainer.Size = UDim2.new(1, -10, 0.9, -titleBar.Size.Y.Offset)
 cmdInputContainer.Position = UDim2.new(0, 5, 0.05, 5)
 cmdInputContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 cmdInputContainer.BorderSizePixel = 0
-cmdInputContainer.CanvasSize = UDim2.new(1, 0, 0, 0) -- Diatur agar sesuai dengan isi
+cmdInputContainer.CanvasSize = UDim2.new(1, 0, 0, 0)
 cmdInputContainer.ScrollBarThickness = 5
 
 local cmdInputCorner = Instance.new("UICorner")
