@@ -90,7 +90,9 @@ cmdInput.FocusLost:Connect(function(enterPressed)
         local lines = cmdInput.Text:split("\n")
         local command = lines[#lines]
         if command == name then
+	CheckError(function()
           func()
+	end)
           end
     end
 end)
