@@ -32,6 +32,7 @@ titleBar.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 titleBar.TextColor3 = Color3.fromRGB(0, 255, 150)
 titleBar.Text = "Command Prompt V1.0.0"
 titleBar.Font = Enum.Font.SourceSansSemibold
+titleBar.TextSize = 13
 
 local closeButton = Instance.new("TextButton")
 closeButton.Parent = titleBar
@@ -47,10 +48,27 @@ closeButton.MouseButton1Click:Connect(function()
     cmdFrame.Visible = false
 end)
 
+local cmdInputContainer = Instance.new("ScrollingFrame")
+cmdInputContainer.Parent = cmdFrame
+cmdInputContainer.Size = UDim2.new(1, -10, 0.9, -titleBar.Size.Y.Offset)
+cmdInputContainer.Position = UDim2.new(0, 5, 0.05, 5)
+cmdInputContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+cmdInputContainer.BorderSizePixel = 0
+cmdInputContainer.CanvasSize = UDim2.new(1, 0, 0, 0) -- Diatur agar sesuai dengan isi
+cmdInputContainer.ScrollBarThickness = 5
+
+local cmdInputCorner = Instance.new("UICorner")
+cmdInputCorner.CornerRadius = UDim.new(0.03, 0)
+cmdInputCorner.Parent = cmdInputContainer
+
+local layout = Instance.new("UIListLayout")
+layout.Parent = cmdInputContainer
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+layout.Padding = UDim.new(0, 5)
+
 local cmdInput = Instance.new("TextBox")
-cmdInput.Parent = cmdFrame
-cmdInput.Size = UDim2.new(1, -10, 0.9, -titleBar.Size.Y.Offset)
-cmdInput.Position = UDim2.new(0, 5, 0.05, 5)
+cmdInput.Parent = cmdInputContainer
+cmdInput.Size = UDim2.new(1, 0, 0, 100)
 cmdInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 cmdInput.TextColor3 = Color3.fromRGB(0, 255, 150)
 cmdInput.TextXAlignment = Enum.TextXAlignment.Left
@@ -61,6 +79,7 @@ cmdInput.Font = Enum.Font.Code
 cmdInput.PlaceholderColor3 = Color3.fromRGB(60, 60, 60)
 cmdInput.Text = "> "
 cmdInput.BorderSizePixel = 0
+cmdInput.TextSize = 13
 
 local cmdInputCorner = Instance.new("UICorner")
 cmdInputCorner.CornerRadius = UDim.new(0.03, 0)
@@ -138,11 +157,11 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		titleBar.TextSize = tonumber(command:sub(21))
 		cmdInput.Text = cmdInput.Text .. "\n" .. "Title Text size successfully changed!" .. "\n" .. "> "
 	   end)
-	elseif command == "> bypass-adonis" then
-		print("bypassed")
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
+
+	cmdInputContainer.CanvasSize = UDim2.new(1,0,0,layout.AbsoluteContentSize.Y)
     end
 end)
 
