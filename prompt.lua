@@ -1,7 +1,105 @@
 local CommandPrompt = {}
-local Asset = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
+
+local tweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local frame = Instance.new("Frame")
+local shadow = Instance.new("Frame")
+
+local pingIcon = Instance.new("ImageLabel")
+local pingLabel = Instance.new("TextLabel")
+local memoryIcon = Instance.new("ImageLabel")
+local memoryLabel = Instance.new("TextLabel")
+local fpsIcon = Instance.new("ImageLabel")
+local fpsLabel = Instance.new("TextLabel")
+local separator1 = Instance.new("Frame")
+local separator2 = Instance.new("Frame")
+
+screenGui.Parent = player.PlayerGui
+
+shadow.Size = UDim2.new(0, 455, 0, 65)
+shadow.Position = UDim2.new(0.5, -228, 0.102, 2)
+shadow.BackgroundColor3 = Color3.new(0, 0, 0)
+shadow.BackgroundTransparency = 0.7
+shadow.ZIndex = 0
+shadow.Parent = screenGui
+shadow.Visible = false
+
+frame.Size = UDim2.new(0, 450, 0, 60)
+frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+frame.BackgroundTransparency = 0.5
+frame.BorderSizePixel = 0
+frame.Position = UDim2.new(0.5, -225, 0.1, 0)
+frame.ZIndex = 1
+frame.Parent = screenGui
+frame.Visible = false
+
+pingIcon.Size = UDim2.new(0, 40, 0, 40)
+pingIcon.Position = UDim2.new(0, 10, 0.5, -20)
+pingIcon.Image = "rbxassetid://YOUR_PING_ICON_ID"
+pingIcon.Parent = frame
+pingIcon.BackgroundTransparency = 1
+
+pingLabel.Position = UDim2.new(0, 60, 0.1, -10)
+pingLabel.Size = UDim2.new(0.3, -70, 1, 0)
+pingLabel.Font = Enum.Font.Roboto
+pingLabel.TextSize = 18
+pingLabel.TextColor3 = Color3.new(1, 1, 1)
+pingLabel.Text = "Ping: -- ms"
+pingLabel.Parent = frame
+pingLabel.BackgroundTransparency = 1
+
+memoryIcon.Size = UDim2.new(0, 40, 0, 40)
+memoryIcon.Position = UDim2.new(0.33, 10, 0.5, -20)
+memoryIcon.Image = "rbxassetid://YOUR_MEMORY_ICON_ID"
+memoryIcon.Parent = frame
+memoryIcon.BackgroundTransparency = 1
+
+memoryLabel.Position = UDim2.new(0.33, 60, 0.1, -10)
+memoryLabel.Size = UDim2.new(0.3, -70, 1, 0)
+memoryLabel.Font = Enum.Font.Roboto
+memoryLabel.TextSize = 18
+memoryLabel.TextColor3 = Color3.new(1, 1, 1)
+memoryLabel.Text = "Memory: -- MB"
+memoryLabel.Parent = frame
+memoryLabel.BackgroundTransparency = 1
+
+fpsIcon.Size = UDim2.new(0, 40, 0, 40)
+fpsIcon.Position = UDim2.new(0.66, 10, 0.5, -20)
+fpsIcon.Image = "rbxassetid://YOUR_FPS_ICON_ID"
+fpsIcon.Parent = frame
+fpsIcon.BackgroundTransparency = 1
+
+fpsLabel.Position = UDim2.new(0.66, 60, 0.1, -10)
+fpsLabel.Size = UDim2.new(0.3, -70, 1, 0)
+fpsLabel.Font = Enum.Font.Roboto
+fpsLabel.TextSize = 18
+fpsLabel.TextColor3 = Color3.new(1, 1, 1)
+fpsLabel.Text = "FPS: --"
+fpsLabel.Parent = frame
+fpsLabel.BackgroundTransparency = 1
+
+separator1.Size = UDim2.new(0, 2, 0.7, 0)
+separator1.Position = UDim2.new(0.33, -1, 0.15, 0)
+separator1.BackgroundColor3 = Color3.new(1, 1, 1)
+separator1.ZIndex = 2
+separator1.Parent = frame
+
+separator2.Size = UDim2.new(0, 2, 0.7, 0)
+separator2.Position = UDim2.new(0.66, -1, 0.15, 0)
+separator2.BackgroundColor3 = Color3.new(1, 1, 1)
+separator2.ZIndex = 2
+separator2.Parent = frame
+
+--[[ END
+local fadeInTweenInfo = TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+local fadeInGoals = {BackgroundTransparency = 0.4}
+local fadeInTween = tweenService:Create(frame, fadeInTweenInfo, fadeInGoals)
+fadeInTween:Play()
+]]
+local Asset = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
+--local screenGui = Instance.new("ScreenGui")
+--screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local cmdFrame = Instance.new("Frame")
 cmdFrame.Parent = screenGui
@@ -84,8 +182,6 @@ cmdInput.TextSize = 13
 local cmdInputCorner = Instance.new("UICorner")
 cmdInputCorner.CornerRadius = UDim.new(0.03, 0)
 cmdInputCorner.Parent = cmdInput
-
-local TweenService = game:GetService("TweenService")
 
 local lastYPos = 1
 
@@ -233,6 +329,21 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		cmdInput.Text = cmdInput.Text .. "\n" .. "Your IP is " .. tostring(TRACK_IP()) .. "\n" .. "> "
 	elseif command == "> my-region" then
 		cmdInput.Text = cmdInput.Text .. "\n" .. "Your Region/Country is " .. tostring(Region()) .. "\n" .. "> "
+	elseif command:sub(1,12) == "> beta-ping " then
+		shadow.Visible = command:sub(13)
+		frame.Visible = command:sub(13)
+	elseif command:sub(1,11) == "> set-icon " then
+		if command:sub(12) == "fps" then
+			fpsIcon.Image = "rbxassetid://" .. tonumber(command:sub(16))
+		elseif command:sub(12) == "memory" then
+			memoryIcon.Image = "rbxassetid://" .. tonumber(command:sub(19))
+		elseif command:sub(12) == "ping" then
+			pingIcon.Image = "rbxassetid://" .. tonumber(command:sub(17))
+		else
+			cmdInput.Text = cmdInput.Text .. "\n" .. "you have to fill in the second and third arguments\nexample: second argument: ping / memory / fps \nexample third argument: id of the image" .. "\n" .. "> "
+		end
+	elseif command == "> " then
+		cmdInput.Text = cmdInput.Text .. "\n" .. "Fill command" .. "\n" .. "> "
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
