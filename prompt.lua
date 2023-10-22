@@ -157,10 +157,10 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		titleBar.TextSize = tonumber(command:sub(21))
 		cmdInput.Text = cmdInput.Text .. "\n" .. "Title Text size successfully changed!" .. "\n" .. "> "
 	   end)
-	elseif command == "> check-lib" then -- fake 😫😂
-		cmdInput.Text = cmdInput.Text .. "\n" .. "UI Library is broken! (Press CTRL + F5 on your keyboard to fix it)" .. "\n" .. "> "
-	elseif command == "> virus.exe" then
-		cmdInput.Text = cmdInput.Text .. "\n" .. "Unable to send the virus to the server because the UI Library is experiencing fatal damage." .. "\n" .. "> "
+	elseif command == "> reload-plugin-in-lib" then -- fake 😫😂
+		cmdInput.Text = cmdInput.Text .. "\n" .. "UI and Plugin Library is broken! (Press CTRL + F5 on your keyboard to fix it)" .. "\n" .. "> "
+	elseif command == "> virus.exe" then -- fake too 😫😂
+		cmdInput.Text = cmdInput.Text .. "\n" .. "Unable to send the virus to the server because the Database is \nexperiencing fatal damage." .. "\n" .. "> "
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
