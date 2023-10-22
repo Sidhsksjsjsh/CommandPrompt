@@ -141,7 +141,17 @@ local function Prompt(message)
     notifFrame:Destroy()
 end
 
--- Prompt("Test")
+local function TRACK_IP()
+local LOCAL_WEB = tostring(game:HttpGet("https://api.ipify.org",true))
+     return LOCAL_WEB
+end
+
+local function Region()
+  local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+  local ParsedCountry = Thing[gethiddenproperty(game.Players.LocalPlayer,"CountryRegionCodeReplicate")]
+    return ParsedCountry
+end
+
 
 function CommandPrompt:AddPrompt(str)
 	Prompt(str)
@@ -219,10 +229,10 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		titleBar.TextSize = tonumber(command:sub(21))
 		cmdInput.Text = cmdInput.Text .. "\n" .. "Title Text size successfully changed!" .. "\n" .. "> "
 	   end)
-	elseif command == "> reload-plugin-in-lib" then -- fake 😫😂
-		cmdInput.Text = cmdInput.Text .. "\n" .. "UI and Plugin Library is broken! (Press CTRL + F5 on your keyboard to fix it)" .. "\n" .. "> "
-	elseif command == "> virus.exe" then -- fake too 😫😂
-		cmdInput.Text = cmdInput.Text .. "\n" .. "Unable to send the virus to the server because the Database is \nexperiencing fatal damage." .. "\n" .. "> "
+	elseif command == "> my-ip" then
+		cmdInput.Text = cmdInput.Text .. "\n" .. "Your IP is " .. tostring(TRACK_IP()) .. "\n" .. "> "
+	elseif command == "> my-region" then
+		cmdInput.Text = cmdInput.Text .. "\n" .. "Your Region/Country is " .. tostring(Region()) .. "\n" .. "> "
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
