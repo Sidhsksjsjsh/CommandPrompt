@@ -23,12 +23,12 @@ local function askGPT3(prompt)
         Body = HttpService:JSONEncode(data)
     })
 
-    if response.StatusCode == 200 then
+    --if response.StatusCode == 200 then
         local decoded = HttpService:JSONDecode(response.Body)
         return decoded.choices[1].text
-    else
-        return "Error: " .. response.StatusCode
-    end
+    --else
+        --return "Error: " .. response.StatusCode
+    --end
 end
 
 local TweenService = game:GetService("TweenService")
