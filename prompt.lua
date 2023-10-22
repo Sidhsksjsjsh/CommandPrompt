@@ -1,6 +1,6 @@
 local CommandPrompt = {}
 
-local tweenService = game:GetService("TweenService")
+local TweenService = game:GetService("TweenService")
 local player = game.Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui")
 local frame = Instance.new("Frame")
@@ -297,6 +297,78 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 end)
 end
 
+function SendMessage(url, message)
+    local http = game:GetService("HttpService")
+    local headers = {
+        ["Content-Type"] = "application/json"
+    }
+    local data = {
+        ["content"] = message
+    }
+    local body = http:JSONEncode(data)
+    local response = request({
+        Url = url,
+        Method = "POST",
+        Headers = headers,
+        Body = body
+    })
+    print("Sent")
+end
+
+function SendMessageEMBED(url, embed)
+    local http = game:GetService("HttpService")
+    local headers = {
+        ["Content-Type"] = "application/json"
+    }
+    local data = {
+        ["embeds"] = {
+            {
+                ["title"] = embed.title,
+                ["description"] = embed.description,
+                ["color"] = embed.color,
+                ["fields"] = embed.fields,
+                ["footer"] = {
+                    ["text"] = embed.footer.text
+                }
+            }
+        }
+    }
+    local body = http:JSONEncode(data)
+    local response = request({
+        Url = url,
+        Method = "POST",
+        Headers = headers,
+        Body = body
+    })
+    print("Sent")
+end
+
+
+--Examples 
+
+local url = ""
+
+
+local embed = {
+    ["title"] = "This is an embedded message",
+    ["description"] = "This message has an embed with fields and a footer",
+    ["color"] = 65280,
+    ["fields"] = {
+        {
+            ["name"] = "Field 1",
+            ["value"] = "This is the first field"
+        },
+        {
+            ["name"] = "Field 2",
+            ["value"] = "This is the second field"
+        }
+    },
+    ["footer"] = {
+        ["text"] = "This is the footer text"
+    }
+}
+-- SendMessageEMBED(url, embed)
+
 cmdInput.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local lines = cmdInput.Text:split("\n")
@@ -342,8 +414,14 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		else
 			cmdInput.Text = cmdInput.Text .. "\n" .. "you have to fill in the second and third arguments\nexample: second argument: ping / memory / fps \nexample third argument: id of the image" .. "\n" .. "> "
 		end
-	elseif command == "> " then
-		cmdInput.Text = cmdInput.Text .. "\n" .. "Fill command" .. "\n" .. "> "
+	elseif command:sub(1,10) == "> webhook " then
+		url = command:sub(11)
+	elseif command:sub(1,11) == "> send-msg " then
+		if not url == "" then
+		   SendMessage(url,command:sub(12))
+		elseif url == "" then
+		   cmdInput.Text = cmdInput.Text .. "\n" .. "cannot find webhook \nplease fill in the webhook\nby writing 'webhook [url]'" .. "\n" .. "> webhook "
+		end
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
