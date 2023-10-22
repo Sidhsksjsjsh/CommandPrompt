@@ -26,11 +26,11 @@ local function askGPT3(prompt)
     local decoded = HttpService:JSONDecode(response.Body)
 	print(decoded)
 
-    if decoded and decoded.choices and #decoded.choices > 0 then
+    --if decoded and decoded.choices and #decoded.choices > 0 then
         return decoded.choices[#decoded.choices].text
-    else
-        return "Error: Unexpected response format"
-    end
+    --else
+        --return "Error: Unexpected response format"
+    --end
 end
 
 local TweenService = game:GetService("TweenService")
