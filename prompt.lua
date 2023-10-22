@@ -1,4 +1,5 @@
 local CommandPrompt = {}
+local CommandPromptRequest = (syn and syn.request) or http and http.request or http_request or (fluxus and fluxus.request) or request
 
 local TweenService = game:GetService("TweenService")
 local player = game.Players.LocalPlayer
@@ -297,7 +298,8 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 end)
 end
 
-function SendMessage(url, message)
+local function SendMessage(url,message)
+CheckError(function()
     local http = game:GetService("HttpService")
     local headers = {
         ["Content-Type"] = "application/json"
@@ -306,16 +308,18 @@ function SendMessage(url, message)
         ["content"] = message
     }
     local body = http:JSONEncode(data)
-    local response = request({
+    local response = CommandPromptRequest({
         Url = url,
         Method = "POST",
         Headers = headers,
         Body = body
     })
-    print("Sent")
+    Prompt("Sent")
+end)
 end
 
-function SendMessageEMBED(url, embed)
+local function SendMessageEMBED(url,embed)
+CheckError(function()
     local http = game:GetService("HttpService")
     local headers = {
         ["Content-Type"] = "application/json"
@@ -334,13 +338,14 @@ function SendMessageEMBED(url, embed)
         }
     }
     local body = http:JSONEncode(data)
-    local response = request({
+    local response = CommandPromptRequest({
         Url = url,
         Method = "POST",
         Headers = headers,
         Body = body
     })
-    print("Sent")
+    Prompt("Sent")
+end)
 end
 
 
