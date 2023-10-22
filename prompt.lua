@@ -176,7 +176,7 @@ cmdInput.MultiLine = true
 cmdInput.ClearTextOnFocus = false
 cmdInput.Font = Enum.Font.Code
 cmdInput.PlaceholderColor3 = Color3.fromRGB(60, 60, 60)
-cmdInput.Text = "> "
+cmdInput.Text = "API: Working \nAll Bypass: Working \nAll Command: Working \n> "
 cmdInput.BorderSizePixel = 0
 cmdInput.TextSize = 13
 
@@ -430,8 +430,7 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
-
-	cmdInputContainer.CanvasSize = UDim2.new(1,0,0,layout.AbsoluteContentSize.Y)
+	cmdInputContainer.CanvasSize = UDim2.new(1,0,0,layout.AbsoluteContentSize.Y + #lines)
     end
 end)
 
