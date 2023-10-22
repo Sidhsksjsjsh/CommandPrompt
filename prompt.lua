@@ -167,7 +167,7 @@ if not index then
 end
 end
 
-function CommandPrompt:Show()
+function CommandPrompt:Enabled()
   cmdFrame.Visible = true
 end
 
