@@ -85,6 +85,68 @@ local cmdInputCorner = Instance.new("UICorner")
 cmdInputCorner.CornerRadius = UDim.new(0.03, 0)
 cmdInputCorner.Parent = cmdInput
 
+local TweenService = game:GetService("TweenService")
+
+local lastYPos = 1
+
+local function Prompt(message)
+    local screenGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("Prompt A1")
+    
+    if not screenGui then
+        screenGui = Instance.new("ScreenGui")
+        screenGui.Name = "Prompt A1"
+        screenGui.Parent = game.Players.LocalPlayer.PlayerGui
+    end
+
+    local notifFrame = Instance.new("Frame")
+    notifFrame.Size = UDim2.new(0.5, 0, 0, 30)
+    notifFrame.Position = UDim2.new(0.4, 0, lastYPos, 0)
+    notifFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+    notifFrame.BorderColor3 = Color3.new(0, 1, 0)
+    notifFrame.Parent = screenGui
+
+    local notifLabel = Instance.new("TextLabel")
+    notifLabel.Text = message
+    notifLabel.Size = UDim2.new(1, 0, 1, 0)
+    notifLabel.BackgroundTransparency = 1
+    notifLabel.TextColor3 = Color3.new(1, 1, 1)
+    notifLabel.Font = Enum.Font.SourceSansBold
+    notifLabel.TextScaled = true
+    notifLabel.Parent = notifFrame
+    
+    local textSize = notifLabel.TextBounds.Y
+    local newHeight = math.max(notifFrame.Size.Y.Offset, textSize + 10)
+    notifFrame.Size = UDim2.new(0.4, 0, 0, newHeight)
+    
+    lastYPos = lastYPos - notifFrame.Size.Y.Scale - 0.1
+    
+    local endPos = UDim2.new(0.3, 0, lastYPos, 5)
+    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+    local tweenGoal = {}
+    tweenGoal.Position = endPos
+    
+    local tween = TweenService:Create(notifFrame, tweenInfo, tweenGoal)
+    tween:Play()
+
+    task.wait(4)
+
+    local fadeInfo = TweenInfo.new(1)
+    local fadeGoal = {}
+    fadeGoal.BackgroundTransparency = 1
+    fadeGoal.TextTransparency = 1
+    local fadeTween = TweenService:Create(notifLabel, fadeInfo, fadeGoal)
+    fadeTween:Play()
+
+    fadeTween.Completed:Wait()
+    notifFrame:Destroy()
+end
+
+-- Prompt("Test")
+
+function CommandPrompt:AddPrompt(str)
+	Prompt(str)
+end
+
 local function CheckError(str)
 local index,error = pcall(function()
 	str()
