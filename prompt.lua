@@ -24,6 +24,8 @@ local function askGPT3(prompt)
     })
 
     local decoded = HttpService:JSONDecode(response.Body)
+	print(decoded)
+
     if decoded and decoded.choices and #decoded.choices > 0 then
         return decoded.choices[#decoded.choices].text
     else
@@ -459,6 +461,7 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		end
 	elseif command:sub(1,10) == "> api_key " then
 		apiKey = command:sub(11)
+		cmdInput.Text = cmdInput.Text .. "\n" .. "> askgpt "
 	elseif command:sub(1,9) == "> askgpt " then
 		CheckError(function()
 			if apiKey == "" then
