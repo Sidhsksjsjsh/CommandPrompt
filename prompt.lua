@@ -464,7 +464,7 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 			if apiKey == "" then
 				cmdInput.Text = cmdInput.Text .. "\n" .. "Required Api Key" .. "\n" .. "> api_key "
 			else
-		                askGPT3(command:sub(10))
+		                cmdInput.Text = cmdInput.Text .. "\n" .. tostring(askGPT3(command:sub(10))) .. "\n" .. "> askgpt "
 			end
 		end)
 	else
