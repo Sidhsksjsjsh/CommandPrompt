@@ -1,5 +1,35 @@
 local CommandPrompt = {}
 local CommandPromptRequest = (syn and syn.request) or http and http.request or http_request or (fluxus and fluxus.request) or request
+local HttpService = game:GetService("HttpService")
+
+local openaiURL = "https://api.openai.com/v1/engines/davinci/completions"
+local apiKey = ""
+
+local function askGPT3(prompt)
+    local headers = {
+        ["Authorization"] = "Bearer " .. apiKey,
+        ["content-type"] = "application/json"
+    }
+    
+    local data = {
+        prompt = prompt,
+        max_tokens = 50
+    }
+
+    local response = CommandPromptRequest({
+        Url = openaiURL,
+        Method = "POST",
+        Headers = headers,
+        Body = HttpService:JSONEncode(data)
+    })
+
+    if response.StatusCode == 200 then
+        local decoded = HttpService:JSONDecode(response.Body)
+        return decoded.choices[1].text
+    else
+        return "Error: " .. response.StatusCode
+    end
+end
 
 local TweenService = game:GetService("TweenService")
 local player = game.Players.LocalPlayer
@@ -427,6 +457,16 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		elseif url == "" then
 		   cmdInput.Text = cmdInput.Text .. "\n" .. "cannot find webhook \nplease fill in the webhook\nby writing 'webhook [url]'" .. "\n" .. "> webhook "
 		end
+	elseif command:sub(1,10) == "> api_key " then
+		apiKey = command:sub(11)
+	elseif command:sub(1,9) == "> askgpt " then
+		CheckError(function()
+			if apiKey == "" then
+				cmdInput.Text = cmdInput.Text .. "\n" .. "Required Api Key" .. "\n" .. "> api_key "
+			else
+		                askGPT3(command:sub(10))
+			end
+		end)
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
