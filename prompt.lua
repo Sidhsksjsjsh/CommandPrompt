@@ -6,7 +6,7 @@ local apiKey = ""
 local BOT_TOKEN = ""
 local CHANNEL_ID = ""
 local WEBHOOK_ID = ""
-
+-- 😠
 local function createWebhook(webhookName)
     local headers = {
         ["Authorization"] = "Bot " .. BOT_TOKEN,
@@ -356,6 +356,7 @@ local function Prompt(message)
 
     fadeTween.Completed:Wait()
     notifFrame:Destroy()
+    lastYPos = 1
 end
 
 local function TRACK_IP()
