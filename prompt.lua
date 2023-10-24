@@ -24,13 +24,13 @@ local function createWebhook(webhookName)
     })
 end
 
-local function deleteWebhook(webhookId)
+local function deleteWebhook()
     local headers = {
         ["Authorization"] = "Bot " .. BOT_TOKEN
     }
 
     CommandPromptRequest({
-        Url = "https://discord.com/api/v9/webhooks/" .. webhookId,
+        Url = "https://discord.com/api/v9/webhooks/" .. WEBHOOK_ID,
         Method = "DELETE",
         Headers = headers
     })
@@ -50,10 +50,9 @@ local function checkBotToken()
     end)
     
     if success and response.StatusCode == 200 then
-        print("Bot token valid")
-    else
-        print("Bot token tidak valid")
+        return true
     end
+	return false
 end
 
 local function checkChannelId()
@@ -70,10 +69,9 @@ local function checkChannelId()
     end)
     
     if success and response.StatusCode == 200 then
-        print("Channel ID valid")
-    else
-        print("Channel ID tidak valid")
+        return true
     end
+	return false
 end
 
 local function checkWebhookId()
@@ -90,10 +88,9 @@ local function checkWebhookId()
     end)
     
     if success and response.StatusCode == 200 then
-        print("Webhook ID valid")
-    else
-        print("Webhook ID tidak valid")
+        return true
     end
+	return false
 end
 
 local function askGPT3(prompt)
@@ -561,6 +558,35 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		                cmdInput.Text = cmdInput.Text .. "\n" .. tostring(askGPT3(command:sub(10))) .. "\n" .. "> askgpt "
 			end
 		end)
+	elseif command:sub(1,12) == "> bot_token " then
+		if checkBotToken() then
+			BOT_TOKEN = command:sub(13)
+			cmdInput.Text = cmdInput.Text .. "\n" .. "Valid Bot Token!" .. "\n" .. "> "
+		else
+			cmdInput.Text = cmdInput.Text .. "\n" .. "Invalid Bot Token!" .. "\n" .. "> bot_token "
+		end
+	elseif command:sub(1,13) == "> channel_id " then
+		if checkChannelId() then
+			CHANNEL_ID = command:sub(14)
+			cmdInput.Text = cmdInput.Text .. "\n" .. "Valid Channel Id!" .. "\n" .. "> "
+		else
+			cmdInput.Text = cmdInput.Text .. "\n" .. "Invalid Channel ID!" .. "\n" .. "> channel_id "
+		end
+	elseif command:sub(1,13) == "> webhook_id " then
+		if checkWebhookId() then
+			WEBHOOK_ID = command:sub(14)
+			cmdInput.Text = cmdInput.Text .. "\n" .. "Valid Webhook ID!" .. "\n" .. "> "
+		else
+			cmdInput.Text = cmdInput.Text .. "\n" .. "Invalid Webhook ID!" .. "\n" .. "> webhook_id "
+		end
+	elseif command:sub(1,14) == "> add_webhook " then
+		if checkBotToken() and checkChannelId() then
+			createWebhook(command:sub(15))
+		else
+			cmdInput.Text = cmdInput.Text .. "\n" .. "Invalid Bot Token and Channel ID! \nPlease enter the token and ID correctly." .. "\n" .. "> channel_id \n> bot_token "
+		end
+	elseif command == "> delete_webhook " then
+		deleteWebhook()
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
