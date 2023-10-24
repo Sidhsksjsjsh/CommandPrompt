@@ -1,9 +1,100 @@
 local CommandPrompt = {}
 local CommandPromptRequest = (syn and syn.request) or http and http.request or http_request or (fluxus and fluxus.request) or request
 local HttpService = game:GetService("HttpService")
-
 local openaiURL = "https://api.openai.com/v1/engines/davinci/completions"
 local apiKey = ""
+local BOT_TOKEN = ""
+local CHANNEL_ID = ""
+local WEBHOOK_ID = ""
+
+local function createWebhook(webhookName)
+    local headers = {
+        ["Authorization"] = "Bot " .. BOT_TOKEN,
+        ["Content-Type"] = "application/json"
+    }
+    local body = HttpService:JSONEncode({
+        name = webhookName
+    })
+
+    CommandPromptRequest({
+        Url = "https://discord.com/api/v9/channels/" .. CHANNEL_ID .. "/webhooks",
+        Method = "POST",
+        Headers = headers,
+        Body = body
+    })
+end
+
+local function deleteWebhook(webhookId)
+    local headers = {
+        ["Authorization"] = "Bot " .. BOT_TOKEN
+    }
+
+    CommandPromptRequest({
+        Url = "https://discord.com/api/v9/webhooks/" .. webhookId,
+        Method = "DELETE",
+        Headers = headers
+    })
+end
+
+local function checkBotToken()
+    local headers = {
+        ["Authorization"] = "Bot " .. BOT_TOKEN
+    }
+
+    local success, response = pcall(function()
+        return CommandPromptRequest({
+            Url = "https://discord.com/api/v9/users/@me",
+            Method = "GET",
+            Headers = headers
+        })
+    end)
+    
+    if success and response.StatusCode == 200 then
+        print("Bot token valid")
+    else
+        print("Bot token tidak valid")
+    end
+end
+
+local function checkChannelId()
+    local headers = {
+        ["Authorization"] = "Bot " .. BOT_TOKEN
+    }
+
+    local success, response = pcall(function()
+        return CommandPromptRequest({
+            Url = "https://discord.com/api/v9/channels/" .. CHANNEL_ID,
+            Method = "GET",
+            Headers = headers
+        })
+    end)
+    
+    if success and response.StatusCode == 200 then
+        print("Channel ID valid")
+    else
+        print("Channel ID tidak valid")
+    end
+end
+
+local function checkWebhookId()
+    local headers = {
+        ["Authorization"] = "Bot " .. BOT_TOKEN
+    }
+
+    local success, response = pcall(function()
+        return CommandPromptRequest({
+            Url = "https://discord.com/api/v9/webhooks/" .. WEBHOOK_ID,
+            Method = "GET",
+            Headers = headers
+        })
+    end)
+    
+    if success and response.StatusCode == 200 then
+        print("Webhook ID valid")
+    else
+        print("Webhook ID tidak valid")
+    end
+end
 
 local function askGPT3(prompt)
     local headers = {
