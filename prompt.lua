@@ -296,7 +296,7 @@ cmdInput.MultiLine = true
 cmdInput.ClearTextOnFocus = false
 cmdInput.Font = Enum.Font.Code
 cmdInput.PlaceholderColor3 = Color3.fromRGB(60, 60, 60)
-cmdInput.Text = "API: Working \nAll Bypass: Working \nAll Command: Working \n> "
+cmdInput.Text = "All API: Working \nAll Bypass: Working \nAll Command: Working \n> "
 cmdInput.BorderSizePixel = 0
 cmdInput.TextSize = 13
 
@@ -588,6 +588,8 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		end
 	elseif command == "> delete_webhook " then
 		deleteWebhook()
+	elseif command == "> clear " then
+		cmdInput.Text = "All API: Working \nAll Bypass: Working \nAll Command: Working \n> "
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
