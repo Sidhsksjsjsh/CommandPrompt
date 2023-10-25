@@ -327,7 +327,7 @@ local function Prompt(message)
     notifLabel.Size = UDim2.new(1, 0, 1, 0)
     notifLabel.BackgroundTransparency = 1
     notifLabel.TextColor3 = Color3.new(1, 1, 1)
-    notifLabel.Font = Enum.Font.SourceSansBold
+    notifLabel.Font = Enum.Font.FredokaOne
     notifLabel.TextScaled = true
     notifLabel.Parent = notifFrame
     
