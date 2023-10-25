@@ -588,8 +588,10 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		end
 	elseif command == "> delete_webhook " then
 		deleteWebhook()
-	elseif command == "> clear " then
+	elseif command == "> clear" then
 		cmdInput.Text = "All API: Working \nAll Bypass: Working \nAll Command: Working \n> "
+	elseif command:sub(1,15) == "> fake-display " then
+		cmdInput.Text = cmdInput.Text .. command:sub(16)
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
