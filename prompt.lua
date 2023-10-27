@@ -495,6 +495,12 @@ local embed = {
 }
 -- SendMessageEMBED(url, embed)
 
+local function Descendants(target,get)
+for _,str in pairs(target:GetDescendants()) do
+	get(str)
+end
+end
+
 cmdInput.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local lines = cmdInput.Text:split("\n")
@@ -591,7 +597,13 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 	elseif command == "> clear" then
 		cmdInput.Text = "All API: Working \nAll Bypass: Working \nAll Command: Working \n> "
 	elseif command:sub(1,15) == "> fake-display " then
-		cmdInput.Text = cmdInput.Text .. command:sub(16)
+		cmdInput.Text = cmdInput.Text .. "\n" .. command:sub(16)
+	elseif command == "> click" then
+		Descendants(game:GetService("Workspace"),function(str)
+		if str:IsA("ClickDetector") then
+			fireclickdetector(str)
+		    end
+		end)
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
