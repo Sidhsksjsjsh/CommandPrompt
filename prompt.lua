@@ -6,7 +6,7 @@ local apiKey = ""
 local BOT_TOKEN = ""
 local CHANNEL_ID = ""
 local WEBHOOK_ID = ""
--- 😠
+-- 🙂
 local function createWebhook(webhookName)
     local headers = {
         ["Authorization"] = "Bot " .. BOT_TOKEN,
@@ -501,6 +501,22 @@ for _,str in pairs(target:GetDescendants()) do
 end
 end
 
+local function Children(target,get)
+for _,str in pairs(target:GetChildren()) do
+	get(str)
+end
+end
+
+local function AddList(arg1,arg2)
+	cmdInput.Text = cmdInput.Text .. "\n" .. tostring(arg1) .. "\n" .. "> " .. tostring(arg2)
+end
+
+local function AddTimer(num,replace)
+for i = 1,tonumber(num) do
+	replace(i)
+end
+end
+
 cmdInput.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local lines = cmdInput.Text:split("\n")
@@ -598,10 +614,20 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		cmdInput.Text = "All API: Working \nAll Bypass: Working \nAll Command: Working \n> "
 	elseif command:sub(1,15) == "> fake-display " then
 		cmdInput.Text = cmdInput.Text .. "\n" .. command:sub(16)
-	elseif command == "> click" then
+	elseif command:sub(1,8) == "> click " then
 		Descendants(game:GetService("Workspace"),function(str)
 		if str:IsA("ClickDetector") then
-			fireclickdetector(str)
+			AddTimer(command:sub(9),function(getTimer)
+				fireclickdetector(str)
+				cmdInput.Text = cmdInput.Text .. "\n" .. "Firing All Click Detectors!" .. "\n" .. "> "
+			end)
+		    end
+		end)
+	elseif command == "> no-proximity-duration" then
+		Descendants(game:GetService("Workspace"),function(str)
+		if str:IsA("ProximityPrompt") then
+			str.HoldDuration = 0
+			AddList("Removed ProximityPrompt Timer {HoldDuration:0}","")
 		    end
 		end)
 	else
