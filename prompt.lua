@@ -551,7 +551,7 @@ local morseTable = {
     W = ".--",
     X = "-..-",
     Y = "-.--",
-    Z = "--.."
+    Z = "--..",
 -- lower:
     a = ".-",
     b = "-...",
@@ -578,7 +578,7 @@ local morseTable = {
     w = ".--",
     x = "-..-",
     y = "-.--",
-    z = "--.."
+    z = "--..",
 -- Morse Translator:
     [".-"] = "a",
     ["-..."] = "b",
@@ -635,7 +635,7 @@ local morseTranslator = {
     ["-..-"] = { letter = "x", morse = "-..-" },
     ["-.--"] = { letter = "y", morse = "-.--" },
     ["--.."] = { letter = "z", morse = "--.." },
-    [" "] = { letter = " ", morse = " " },  -- Spasi
+    [" "] = { letter = " ", morse = " " },
 }
 
 local function translateMorseToLetters(morseText)
