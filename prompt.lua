@@ -524,8 +524,7 @@ for i = 1,tonumber(num) do
 end
 end
 
-local morseTable = {
--- capitals:
+--[[local morseTable = {
     A = ".-",
     B = "-...",
     C = "-.-.",
@@ -552,7 +551,6 @@ local morseTable = {
     X = "-..-",
     Y = "-.--",
     Z = "--..",
--- lower:
     a = ".-",
     b = "-...",
     c = "-.-.",
@@ -579,7 +577,6 @@ local morseTable = {
     x = "-..-",
     y = "-.--",
     z = "--..",
--- Morse Translator:
     [".-"] = "a",
     ["-..."] = "b",
     ["-.-."] = "c",
@@ -607,6 +604,7 @@ local morseTable = {
     ["-.--"] = "y",
     ["--.."] = "z"
 }
+]]
 
 local morseTranslator = {
     [".-"] = { letter = "a", morse = ".-" },
