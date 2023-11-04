@@ -370,6 +370,13 @@ local function Region()
     return ParsedCountry
 end
 
+local function Ascii(str)
+	return string.byte(str)
+end
+
+local function Letter(str)
+	return string.char(str)
+end
 
 function CommandPrompt:AddPrompt(str)
 	Prompt(str)
@@ -630,6 +637,10 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 			AddList("Removed ProximityPrompt Timer {HoldDuration:0}","")
 		    end
 		end)
+	elseif command:sub(1,18) == "> letter-to-ascii " then
+		AddList(string.format("Letter/word: %s \nAscii code: %s",command:sub(19),Ascii(command:sub(19))))
+	elseif command:sub(1,18) == "> ascii-to-letter " then
+		AddList(string.format("Ascii code: %s \nLetter/word: %s",command:sub(19),Letter(command:sub(19))))
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
