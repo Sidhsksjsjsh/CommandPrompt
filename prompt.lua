@@ -608,8 +608,59 @@ local morseTable = {
     ["--.."] = "z"
 }
 
-function Morse(str)
-    return morseTable[str] or ""
+local morseTranslator = {
+    [".-"] = { letter = "a", morse = ".-" },
+    ["-..."] = { letter = "b", morse = "-..." },
+    ["-.-."] = { letter = "c", morse = "-.-." },
+    ["-.."] = { letter = "d", morse = "-.." },
+    ["."] = { letter = "e", morse = "." },
+    ["..-."] = { letter = "f", morse = "..-." },
+    ["--."] = { letter = "g", morse = "--." },
+    ["...."] = { letter = "h", morse = "...." },
+    [".."] = { letter = "i", morse = ".." },
+    [".---"] = { letter = "j", morse = ".---" },
+    ["-.-"] = { letter = "k", morse = "-.-" },
+    [".-.."] = { letter = "l", morse = ".-.." },
+    ["--"] = { letter = "m", morse = "--" },
+    ["-."] = { letter = "n", morse = "-." },
+    ["---"] = { letter = "o", morse = "---" },
+    [".--."] = { letter = "p", morse = ".--." },
+    ["--.-"] = { letter = "q", morse = "--.-" },
+    [".-."] = { letter = "r", morse = ".-." },
+    ["..."] = { letter = "s", morse = "..." },
+    ["-"] = { letter = "t", morse = "-" },
+    ["..-"] = { letter = "u", morse = "..-" },
+    ["...-"] = { letter = "v", morse = "...-" },
+    [".--"] = { letter = "w", morse = ".--" },
+    ["-..-"] = { letter = "x", morse = "-..-" },
+    ["-.--"] = { letter = "y", morse = "-.--" },
+    ["--.."] = { letter = "z", morse = "--.." },
+    [" "] = { letter = " ", morse = " " },  -- Spasi
+}
+
+local function translateMorseToLetters(morseText)
+    local words = {}
+    for word in morseText:gmatch("[^ ]+") do
+        local letters = {}
+        for code in word:gmatch("[.-]+") do
+            table.insert(letters, morseTranslator[code].letter)
+        end
+        table.insert(words, table.concat(letters))
+    end
+    return table.concat(words, " ")
+end
+
+local function translateLettersToMorse(text)
+    local words = {}
+    for word in text:upper():gmatch("[^ ]+") do
+        local codes = {}
+        for i = 1, #word do
+            local letter = word:sub(i, i)
+            codes[i] = morseTranslator[letter].morse
+        end
+        table.insert(words, table.concat(codes, " "))
+    end
+    return table.concat(words, "   ")
 end
 
 cmdInput.FocusLost:Connect(function(enterPressed)
@@ -648,12 +699,12 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		shadow.Visible = command:sub(13)
 		frame.Visible = command:sub(13)
 	elseif command:sub(1,11) == "> set-icon " then
-		if command:sub(12) == "fps" then
-			fpsIcon.Image = "rbxassetid://" .. tonumber(command:sub(16))
-		elseif command:sub(12) == "memory" then
-			memoryIcon.Image = "rbxassetid://" .. tonumber(command:sub(19))
-		elseif command:sub(12) == "ping" then
-			pingIcon.Image = "rbxassetid://" .. tonumber(command:sub(17))
+		if command:sub(12,16) == "fps " then
+			fpsIcon.Image = "rbxassetid://" .. tonumber(command:sub(17))
+		elseif command:sub(12,19) == "memory " then
+			memoryIcon.Image = "rbxassetid://" .. tonumber(command:sub(20))
+		elseif command:sub(12,17) == "ping " then
+			pingIcon.Image = "rbxassetid://" .. tonumber(command:sub(18))
 		else
 			cmdInput.Text = cmdInput.Text .. "\n" .. "you have to fill in the second and third arguments\nexample: second argument: ping / memory / fps \nexample third argument: id of the image" .. "\n" .. "> "
 		end
@@ -729,6 +780,10 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		AddList(string.format("Letter/word: %s \nAscii code: %s",command:sub(19),Ascii(command:sub(19))))
 	elseif command:sub(1,18) == "> ascii-to-letter " then
 		AddList(string.format("Ascii code: %s \nLetter/word: %s",command:sub(19),Letter(command:sub(19))))
+	elseif command:sub(1,18) == "> letter-to-morse " then
+		AddList(string.format("Letter/word: %s \nMorse code: %s",command:sub(19),translateLettersToMorse(command:sub(19))))
+	elseif command:sub(1,18) == "> morse-to-letter " then
+		AddList(string.format("Morse code: %s \nLetter/word: %s",command:sub(19),translateMorseToLetters(command:sub(19))))
 	else
 	     cmdInput.Text = cmdInput.Text .. "\n" .. "Command Error or Invalid, Please enter the command again." .. "\n" .. "> "
         end
