@@ -346,8 +346,8 @@ local function Prompt(message)
     local tween = TweenService:Create(notifFrame, tweenInfo, tweenGoal)
     tween:Play()
 
+task.spawn(function()
     task.wait(4)
-
     local fadeInfo = TweenInfo.new(1)
     local fadeGoal = {}
     fadeGoal.BackgroundTransparency = 1
@@ -358,6 +358,7 @@ local function Prompt(message)
     fadeTween.Completed:Wait()
     notifFrame:Destroy()
     lastYPos = 1
+	end)
 end
 
 local function TRACK_IP()
