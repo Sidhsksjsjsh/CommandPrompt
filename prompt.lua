@@ -137,6 +137,7 @@ local separator1 = Instance.new("Frame")
 local separator2 = Instance.new("Frame")
 
 screenGui.Parent = player.PlayerGui
+screenGui.ResetOnSpawn = false
 
 shadow.Size = UDim2.new(0, 455, 0, 65)
 shadow.Position = UDim2.new(0.5, -228, 0.102, 2)
