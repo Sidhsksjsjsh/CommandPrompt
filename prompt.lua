@@ -760,14 +760,12 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 		cmdInput.Text = "All API: Working \nAll Bypass: Working \nAll Command: Working \n> "
 	elseif command:sub(1,15) == "> fake-display " then
 		cmdInput.Text = cmdInput.Text .. "\n" .. command:sub(16)
-	elseif command:sub(1,8) == "> click " then
+	elseif command == "> click" then
 		Descendants(game:GetService("Workspace"),function(str)
 		if str:IsA("ClickDetector") then
-			AddTimer(command:sub(9),function(getTimer)
-				fireclickdetector(str)
-				cmdInput.Text = cmdInput.Text .. "\n" .. "Firing All Click Detectors!" .. "\n" .. "> "
-			end)
-		    end
+			fireclickdetector(str)
+			cmdInput.Text = cmdInput.Text .. "\n" .. "Firing All Click Detectors!" .. "\n" .. "> "
+			end
 		end)
 	elseif command == "> no-proximity-duration" then
 		Descendants(game:GetService("Workspace"),function(str)
