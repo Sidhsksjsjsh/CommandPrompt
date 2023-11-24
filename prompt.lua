@@ -675,9 +675,13 @@ end
 local function addcmds(name,func)
     CmdpromptCommand[name].cmd = func()
 end
-
+--[[
 addcmds("> get-game-id",function()
-	k
+	cmdInput.Text = cmdInput.Text .. "\n" .. "game ID: " .. tostring(game.PlaceId) .. "\n" .. "> "
+end)
+
+addcmds("> get-game-job-id",function()
+	cmdInput.Text = cmdInput.Text .. "\n" .. "game/server Job ID: " .. tostring(game.JobId) .. "\n" .. "> "
 end)
 
 addcmds("",function()
@@ -723,10 +727,7 @@ end)
 addcmds("",function()
 	k
 end)
-
-addcmds("",function()
-	k
-end)
+--]]
 
 cmdInput.FocusLost:Connect(function(enterPressed)
     if enterPressed then
