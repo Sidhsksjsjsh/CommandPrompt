@@ -663,6 +663,71 @@ local function translateLettersToMorse(text)
     return table.concat(words, "   ")
 end
 
+local CmdpromptCommand = {}
+local function RunCommand(message)
+    for _, word in pairs(CmdpromptCommand) do
+        if string.match(string.lower(message),word) then
+            loadstring(CmdpromptCommand[message].cmd)
+        end
+    end
+end
+
+local function addcmds(name,func)
+    CmdpromptCommand[name].cmd = func()
+end
+
+addcmds("> get-game-id",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
+addcmds("",function()
+	k
+end)
+
 cmdInput.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local lines = cmdInput.Text:split("\n")
