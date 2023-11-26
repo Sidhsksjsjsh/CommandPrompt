@@ -664,16 +664,26 @@ local function translateLettersToMorse(text)
 end
 
 local CmdpromptCommand = {}
-local function RunCommand(message)
+local function RunCommand(message) --no argument
     for _, word in pairs(CmdpromptCommand) do
         if string.match(string.lower(message),word) then
-            loadstring(CmdpromptCommand[message].cmd)
+            CmdpromptCommand[message].cmd()
         end
     end
 end
 
-local function addcmds(name,func)
-    CmdpromptCommand[name].cmd = func()
+local function RunArgCommand(message) --with argument
+    for _, word in pairs(CmdpromptCommand) do
+        if string.match(string.lower(message),word) then
+		if word:sub(1,#message) == message then
+                    CmdpromptCommand[message].cmd()
+		end
+        end
+    end
+end
+
+function CommandPrompt:addcmds(name,func)
+    CmdpromptCommand[name] = {cmd = func}
 end
 --[[
 addcmds("> get-game-id",function()
@@ -733,6 +743,7 @@ cmdInput.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local lines = cmdInput.Text:split("\n")
         local command = lines[#lines]
+	RunCommand(command)
         if command == "> exit" then
             cmdFrame.Visible = false
 	    cmdInput.Text = cmdInput.Text .. "\n" .. "> "
