@@ -114,11 +114,7 @@ local function askGPT3(prompt)
     local decoded = HttpService:JSONDecode(response.Body)
 	print(decoded)
 
-    --if decoded and decoded.choices and #decoded.choices > 0 then
-        return decoded.choices[#decoded.choices].text
-    --else
-        --return "Error: Unexpected response format"
-    --end
+    return decoded["choices"][1]["message"]["content"]
 end
 
 local TweenService = game:GetService("TweenService")
@@ -743,7 +739,7 @@ cmdInput.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local lines = cmdInput.Text:split("\n")
         local command = lines[#lines]
-	RunCommand(command)
+	--RunCommand(command)
         if command == "> exit" then
             cmdFrame.Visible = false
 	    cmdInput.Text = cmdInput.Text .. "\n" .. "> "
